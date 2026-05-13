@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "D2c Snapshot 13mai",
+  "schemaVersion": 1,
+  "description": "Dashboard de pacing D2C Summit 2026 — snapshot 13/mai/2026. KPIs, meta vs realizado por mês, cadência semanal, breakdown por canal/alavanca e mix por tipo de ingresso. Dados do raw TD."
+}
+</script>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D2C Summit 2026 — Snapshot 13/mai</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f0f2f7; padding: 28px; color: #171E43; }
+  .card { background: #fff; border-radius: 14px; padding: 28px; max-width: 900px; margin: 0 auto; box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
+  .header { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 2px solid #f0f2f7; }
+  .logo { width: 40px; height: 40px; background: #0050C3; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .header-text h1 { font-size: 17px; font-weight: 700; color: #171E43; }
+  .header-text p { font-size: 12.5px; color: #888; margin-top: 3px; }
+  .badges { margin-left: auto; display: flex; gap: 8px; flex-shrink: 0; }
+  .badge { display: inline-block; background: #fff0f0; color: #c0392b; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid #fcc; }
+  .badge-g { display: inline-block; background: #f0fff4; color: #27ae60; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid #a8e6c0; }
+  .alert-grupo { background: #f0fff4; border-left: 4px solid #27ae60; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 20px; font-size: 12px; color: #1a6b3a; line-height: 1.6; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+  .kpi { background: #f7f8fc; border-radius: 10px; padding: 14px 16px; }
+  .kl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; font-weight: 600; }
+  .kv { font-size: 26px; font-weight: 700; color: #171E43; line-height: 1.1; }
+  .kv.r { color: #c0392b; }
+  .kv.g { color: #27ae60; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 22px; }
+  .sec { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 12px; }
+  .leg { display: flex; gap: 14px; margin-bottom: 12px; }
+  .leg span { font-size: 10px; color: #888; display: flex; align-items: center; gap: 5px; }
+  .dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
+  .monthly-chart { display: flex; gap: 6px; align-items: flex-end; border-bottom: 2px solid #f0f2f7; padding-bottom: 0; }
+  .mgrp { flex: 1; display: flex; flex-direction: column; align-items: center; }
+  .mbars { display: flex; gap: 4px; align-items: flex-end; }
+  .mbar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 130px; }
+  .mbar .lbl { font-size: 10px; margin-bottom: 3px; font-weight: 700; }
+  .mbar .b { width: 20px; border-radius: 3px 3px 0 0; }
+  .mlbl { font-size: 11px; color: #888; margin-top: 6px; text-align: center; font-weight: 500; }
+  .canal-row { margin-bottom: 11px; }
+  .canal-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+  .canal-name { color: #171E43; font-weight: 500; }
+  .canal-num { font-weight: 700; }
+  .canal-pct { font-size: 10px; color: #aaa; margin-left: 4px; }
+  .canal-track { background: #f0f2f5; border-radius: 4px; height: 10px; overflow: hidden; }
+  .canal-fill { height: 10px; border-radius: 4px; }
+  /* Tipo section */
+  .tipo-section { margin-bottom: 22px; padding: 16px 18px; background: #f7f8fc; border-radius: 10px; }
+  .tipo-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 4px; }
+  .tipo-card { background: #fff; border-radius: 8px; padding: 12px 14px; border: 1px solid #e8eaf0; }
+  .tipo-label { font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: .05em; margin-bottom: 6px; }
+  .tipo-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .tipo-pct { font-size: 12px; color: #aaa; margin-top: 3px; font-weight: 500; }
+  .tipo-bar-wrap { margin-top: 8px; background: #f0f2f5; border-radius: 4px; height: 6px; overflow: hidden; }
+  .tipo-bar { height: 6px; border-radius: 4px; }
+  /* Weekly */
+  .weekly { margin-bottom: 20px; }
+  .wbars { display: flex; gap: 4px; align-items: flex-end; border-bottom: 2px solid #f0f2f7; padding-bottom: 0; }
+  .wslot { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 90px; }
+  .wslot .wlbl { font-size: 9px; font-weight: 700; margin-bottom: 3px; }
+  .wslot .wb { width: 100%; border-radius: 3px 3px 0 0; }
+  .wlabels { display: flex; gap: 4px; margin-top: 6px; }
+  .wlabels div { flex: 1; font-size: 7px; color: #999; text-align: center; line-height: 1.4; }
+  .foot { font-size: 10px; color: #aaa; border-top: 1px solid #f0f2f7; padding-top: 12px; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="logo">D2C</div>
+    <div class="header-text">
+      <h1>D2C Summit 2026 — Pacing &amp; Canais</h1>
+      <p>Snapshot 13/mai/2026 · Raw TD · Meta 2.870 ingressos · Janela fev–set 2026</p>
+    </div>
+    <div class="badges">
+      <span class="badge">🔴 Gap −753</span>
+      <span class="badge-g">🟢 Grupo +12</span>
+    </div>
+  </div>
+
+  <!-- Alerta campanha grupo -->
+  <div class="alert-grupo">
+    ✅ <strong>Campanha grupo convertendo:</strong> pedido <code>grupo_standard_luis30</code> (10 ingressos, 12/mai 19h46) + <code>oferta-grupo-standard25</code> (2 ingressos, 13/mai 01h31) — primeiro sinal real da campanha lançada em 05/mai.
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi"><div class="kl">Ingressos pagos</div><div class="kv">215</div></div>
+    <div class="kpi"><div class="kl">Gap acumulado</div><div class="kv r">−753</div></div>
+    <div class="kpi"><div class="kl">% da meta</div><div class="kv r">7,5%</div></div>
+    <div class="kpi"><div class="kl">Pacing necessário</div><div class="kv">18,8/dia</div></div>
+  </div>
+
+  <!-- Mix por tipo de ingresso -->
+  <div class="tipo-section">
+    <div class="sec">Mix por tipo de ingresso (215 pagos)</div>
+    <div class="tipo-row">
+      <div class="tipo-card">
+        <div class="tipo-label">Standard</div>
+        <div class="tipo-value" style="color:#0050C3">171</div>
+        <div class="tipo-pct">79% do total</div>
+        <div class="tipo-bar-wrap"><div class="tipo-bar" style="width:79%;background:#0050C3"></div></div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-label">VIP</div>
+        <div class="tipo-value" style="color:#7B61FF">42</div>
+        <div class="tipo-pct">19% do total</div>
+        <div class="tipo-bar-wrap"><div class="tipo-bar" style="width:19%;background:#7B61FF"></div></div>
+      </div>
+      <div class="tipo-card">
+        <div class="tipo-label">Backstage</div>
+        <div class="tipo-value" style="color:#BA7517">3</div>
+        <div class="tipo-pct">1% do total</div>
+        <div class="tipo-bar-wrap"><div class="tipo-bar" style="width:1%;background:#BA7517"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: monthly + canal -->
+  <div class="row2">
+
+    <div>
+      <div class="sec">Meta vs realizado por mês</div>
+      <div class="leg">
+        <span><span class="dot" style="background:#C8D9EF"></span>Meta</span>
+        <span><span class="dot" style="background:#0050C3"></span>Realizado</span>
+        <span><span class="dot" style="background:#E24B4A"></span>Colapso</span>
+      </div>
+      <div class="monthly-chart">
+        <div class="mgrp">
+          <div class="mbars">
+            <div class="mbar"><span class="lbl" style="color:#bbb">98</span><div class="b" style="height:29px;background:#C8D9EF"></div></div>
+            <div class="mbar"><span class="lbl" style="color:#0050C3">57</span><div class="b" style="height:16px;background:#0050C3"></div></div>
+          </div>
+          <div class="mlbl">Fev</div>
+        </div>
+        <div class="mgrp">
+          <div class="mbars">
+            <div class="mbar"><span class="lbl" style="color:#bbb">224</span><div class="b" style="height:65px;background:#C8D9EF"></div></div>
+            <div class="mbar"><span class="lbl" style="color:#0050C3">90</span><div class="b" style="height:26px;background:#0050C3"></div></div>
+          </div>
+          <div class="mlbl">Mar</div>
+        </div>
+        <div class="mgrp">
+          <div class="mbars">
+            <div class="mbar"><span class="lbl" style="color:#bbb">278</span><div class="b" style="height:80px;background:#C8D9EF"></div></div>
+            <div class="mbar"><span class="lbl" style="color:#c0392b">43</span><div class="b" style="height:12px;background:#E24B4A"></div></div>
+          </div>
+          <div class="mlbl">Abr</div>
+        </div>
+        <div class="mgrp">
+          <div class="mbars">
+            <div class="mbar"><span class="lbl" style="color:#bbb">368</span><div class="b" style="height:105px;background:#C8D9EF"></div></div>
+            <div class="mbar"><span class="lbl" style="color:#BA7517">25</span><div class="b" style="height:7px;background:#EF9F27"></div></div>
+          </div>
+          <div class="mlbl">Mai*</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec">Canal / alavanca (via slug proxy)</div>
+      <div style="margin-top:14px">
+        <div class="canal-row">
+          <div class="canal-header"><span class="canal-name">CRM / Lifecycle (Laíza)</span><span class="canal-num" style="color:#171E43">84 <span class="canal-pct">39%</span></span></div>
+          <div class="canal-track"><div class="canal-fill" style="width:100%;background:#171E43"></div></div>
+        </div>
+        <div class="canal-row">
+          <div class="canal-header"><span class="canal-name">Direto cliente</span><span class="canal-num" style="color:#0050C3">63 <span class="canal-pct">29%</span></span></div>
+          <div class="canal-track"><div class="canal-fill" style="width:75.0%;background:#0050C3"></div></div>
+        </div>
+        <div class="canal-row">
+          <div class="canal-header"><span class="canal-name">Direto não-cliente</span><span class="canal-num" style="color:#378ADD">45 <span class="canal-pct">21%</span></span></div>
+          <div class="canal-track"><div class="canal-fill" style="width:53.6%;background:#85B7EB"></div></div>
+        </div>
+        <div class="canal-row">
+          <div class="canal-header"><span class="canal-name">🟢 Campanha Grupo (novo)</span><span class="canal-num" style="color:#27ae60">12 <span class="canal-pct">6%</span></span></div>
+          <div class="canal-track"><div class="canal-fill" style="width:14.3%;background:#27ae60"></div></div>
+        </div>
+        <div class="canal-row">
+          <div class="canal-header"><span class="canal-name">Growth</span><span class="canal-num" style="color:#BA7517">6 <span class="canal-pct">3%</span></span></div>
+          <div class="canal-track"><div class="canal-fill" style="width:7.1%;background:#EF9F27"></div></div>
+        </div>
+        <div class="canal-row">
+          <div class="canal-header"><span class="canal-name">Parceiros + VD</span><span class="canal-num" style="color:#999">4 <span class="canal-pct">2%</span></span></div>
+          <div class="canal-track"><div class="canal-fill" style="width:4.8%;background:#B4B2A9"></div></div>
+        </div>
+        <div style="font-size:9.5px;color:#bbb;margin-top:10px;padding-top:8px;border-top:1px solid #eee">
+          Recuperação carrinho: 1 · Grupo: slugs <code>grupo_standard_luis30</code> + <code>oferta-grupo-standard25</code>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Weekly cadence -->
+  <div class="weekly">
+    <div class="sec">Cadência semanal — ingressos por semana (dom–sáb)</div>
+    <div class="wbars">
+      <div class="wslot"><span class="wlbl" style="color:#171E43">57</span><div class="wb" style="height:68px;background:#171E43"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">49</span><div class="wb" style="height:58px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">12</span><div class="wb" style="height:14px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">17</span><div class="wb" style="height:20px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">8</span><div class="wb" style="height:10px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">9</span><div class="wb" style="height:11px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">16</span><div class="wb" style="height:19px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#0050C3">13</span><div class="wb" style="height:15px;background:#0050C3"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#BA7517">5</span><div class="wb" style="height:6px;background:#EF9F27"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#BA7517">9</span><div class="wb" style="height:11px;background:#EF9F27"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#c0392b">6</span><div class="wb" style="height:7px;background:#E24B4A"></div></div>
+      <div class="wslot"><span class="wlbl" style="color:#27ae60">14</span><div class="wb" style="height:17px;background:#27ae60"></div></div>
+    </div>
+    <div class="wlabels">
+      <div>22–28<br>fev</div>
+      <div>01–07<br>mar</div>
+      <div>08–14<br>mar</div>
+      <div>15–21<br>mar</div>
+      <div>22–28<br>mar</div>
+      <div>29/mar–<br>04/abr</div>
+      <div>05–11<br>abr</div>
+      <div>12–18<br>abr</div>
+      <div>19–25<br>abr</div>
+      <div>26/abr–<br>02/mai</div>
+      <div>03–09<br>mai</div>
+      <div>10–16<br>mai*</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Fonte: raw TD 13/mai/2026 · filtro Status=Pago, Valor&gt;0 · 215 ingressos / 162 pedidos · R$121.229 bruta · R$108.053 líquida
+    · mix tipo: Standard 171 (79%) · VIP 42 (19%) · Backstage 3 (1%)
+    · meta mensal: curva oficial Amanda/Karlla no TD · alavanca via slug (proxy)
+    · *mai parcial (13 dias de 31) · última venda: 13/mai 01h31 · pool: 695 abandoned / 49 expired / 29 falhou · PF leads: 773
+    · 🟢 Campanha grupo: 2 pedidos / 12 ingressos em 2 dias (slugs grupo_standard_luis30 + oferta-grupo-standard25)
+  </div>
+
+</div>
+</body>
+</html>
