@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "D2c Gtm Review 2026",
+  "schemaVersion": 1,
+  "description": "GTM Review interativo D2C Summit 2026 — 6 slides: Diagnóstico, Velocidade, Prova 2025, Canais 2025, Proposta e Campanha grupo. Dados raw TD 13/mai/2026."
+}
+</script>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D2C Summit 2026 — GTM Review</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{background:#f4f6f9;min-height:100vh;padding:24px 20px}
+.wrap{max-width:820px;margin:0 auto}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.logo{width:36px;height:36px;background:#185FA5;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500;flex-shrink:0}
+.htitle{font-size:16px;font-weight:500;color:#111}
+.hsub{font-size:12px;color:#888;margin-top:2px}
+.nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.nb{padding:6px 14px;border:1px solid #d0d5dd;border-radius:20px;background:#fff;color:#555;cursor:pointer;font-size:12px;font-weight:400;transition:all .15s}
+.nb:hover{border-color:#185FA5;color:#185FA5}
+.nb.on{background:#185FA5;color:#fff;border-color:#185FA5}
+.sl{display:none}.sl.on{display:block}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.stitle{font-size:16px;font-weight:500;color:#111;margin-bottom:3px}
+.ssub{font-size:12px;color:#888;margin-bottom:16px}
+.kr{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:16px}
+.kc{background:#f8f9fb;border-radius:8px;padding:10px 12px;border:1px solid #eef0f3}
+.kv{font-size:21px;font-weight:500;color:#185FA5}
+.kl{font-size:11px;color:#888;margin-top:2px}
+.kv.w{color:#BA7517}.kv.g{color:#3B6D11}
+.cb{position:relative;height:255px;margin-bottom:14px}
+.note{border-left:3px solid #BA7517;padding:10px 14px;margin-top:12px;font-size:12px;color:#555;background:#fef9f0;border-radius:0 8px 8px 0}
+.note-g{border-left:3px solid #27ae60;padding:10px 14px;margin-top:12px;font-size:12px;color:#1a6b3a;background:#f0fff4;border-radius:0 8px 8px 0}
+.sg{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.sg label{font-size:12px;color:#666;width:26px}
+.sv{font-size:13px;font-weight:500;color:#185FA5;min-width:30px}
+input[type=range]{accent-color:#185FA5;width:160px}
+.pbar{display:flex;border-radius:8px;overflow:hidden;margin-bottom:14px;font-size:11px;font-weight:500}
+.ph1{background:#185FA5;color:#fff;padding:7px 14px;flex:2}
+.ph2{background:#3B6D11;color:#fff;padding:7px 14px;flex:3;text-align:right}
+.wkwrap{border:1px solid #e8eaed;border-radius:8px;margin-bottom:8px;overflow:hidden}
+.wkh{background:#f8f9fb;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e8eaed}
+.wkt{font-size:12px;font-weight:500}
+.wkd{font-size:11px;color:#888}
+.wkb{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;gap:8px;align-items:flex-start}
+.badge{font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px;color:#fff;white-space:nowrap;min-width:58px;text-align:center;margin-top:2px;flex-shrink:0}
+.ci{font-size:11px;color:#444;line-height:1.65}
+.ktab{width:100%;font-size:12px;border-collapse:collapse}
+.ktab td{padding:5px 8px;border-bottom:1px solid #eef0f3;color:#555}
+.ktab td:last-child{font-weight:500;color:#111;text-align:right}
+.pils{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.pil{padding:12px 14px;font-size:12px;color:#555;border-radius:8px;background:#f8f9fb;border:1px solid #eef0f3}
+.pilt{font-weight:500;color:#111;margin-bottom:5px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="logo">D2C</div>
+    <div>
+      <div class="htitle">D2C Summit 2026 — GTM Review</div>
+      <div class="hsub">Meta 2.870 ingressos · Janela fev–set 2026</div>
+    </div>
+  </div>
+
+  <div class="nav" id="nav"></div>
+
+  <div class="card">
+    <div id="slides"></div>
+  </div>
+</div>
+
+<script>
+const ATUAL=215,CUMABR=190,META=2870,PJ=460,PA=520,PJAS=1680;
+const MO=['Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set'];
+const v25=[105,156,244,311,338,529];
+const c25al=[null,null,105,261,505,816,1154,1683];
+const plan=[98,322,600,968,1339,1757,2314,2870];
+const v26obs=[57,90,43,25,null,null,null,null];
+const cum26obs=[57,147,190,215,null,null,null,null];
+const C25='rgba(224,80,80,0.45)';
+const C25line='#e05050';
+const rC=[0.619,0.603,0.533,0.370,0.420,0.382];
+const rK=[0.257,0.205,0.201,0.363,0.154,0.163];
+const rN=[0.124,0.192,0.266,0.267,0.426,0.456];
+const B='#185FA5',G='#3B6D11',AM='#BA7517',GR='#27ae60';
+
+let mai=400,jun=550;
+function calc(m,j){const fj=CUMABR+m+j,need=META-fj,jul=Math.round(need*PJ/PJAS),ago=Math.round(need*PA/PJAS);return{fj,need,jul,ago,set:need-jul-ago}}
+function cum(m,j){const c=calc(m,j);return[null,null,CUMABR,CUMABR+m,CUMABR+m+j,CUMABR+m+j+c.jul,CUMABR+m+j+c.jul+c.ago,META]}
+function prj(m,j){const c=calc(m,j);return[null,null,null,m,j,c.jul,c.ago,c.set]}
+
+const SLS=[{id:'s1',nav:'1 · Diagnóstico'},{id:'s0',nav:'2 · Velocidade'},{id:'s2',nav:'3 · Prova 2025'},{id:'sc',nav:'4 · Canais 2025'},{id:'s3',nav:'5 · Proposta'},{id:'s5',nav:'6 · Campanha grupo'}];
+const navEl=document.getElementById('nav'),slEl=document.getElementById('slides');
+SLS.forEach((s,i)=>{
+  const b=document.createElement('button');b.className='nb';b.textContent=s.nav;b.onclick=()=>go(i);navEl.appendChild(b);
+  const d=document.createElement('div');d.className='sl';d.id=s.id;slEl.appendChild(d);
+});
+function go(i){
+  document.querySelectorAll('.sl').forEach((s,j)=>s.classList.toggle('on',j===i));
+  document.querySelectorAll('.nb').forEach((b,j)=>b.classList.toggle('on',j===i));
+}
+function K(v,l,c=''){return`<div class="kc"><div class="kv ${c}">${v}</div><div class="kl">${l}</div></div>`}
+const baseOpts=(y2=true)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},scales:y2?{y:{beginAtZero:true,title:{display:true,text:'Mensal',font:{size:10}}},y2:{position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'Acumulado',font:{size:10}}}}:{y:{beginAtZero:true,title:{display:true,text:'Ingressos',font:{size:10}}}}});
+
+function buildS1(){
+  document.getElementById('s1').innerHTML=`
+    <div class="stitle">Pacing atual vs meta</div>
+    <div class="ssub">Distribuição original superestimou fev–abr; sazonalidade 2025 mostra concentração no 2º semestre</div>
+    <div class="kr">${K(ATUAL,'Ingressos pagos (até 13/mai)')+K(META-ATUAL,'Gap para meta','w')+K((ATUAL/META*100).toFixed(1)+'%','Execução vs meta','w')+K('2.870','Meta 2026')}</div>
+    <div class="cb"><canvas id="c1"></canvas></div>
+    <div class="note-g">🟢 <strong>Campanha grupo convertendo:</strong> +12 ingressos em 2 pedidos (12–13/mai) via slugs grupo. Semana 10–16/mai: 14 ingressos em 4 dias (3,5/dia) — melhor pacing desde abertura.</div>
+    <div class="note" style="margin-top:8px">Eficiência de mídia 2025: canais pagos = 88% das sessões, 18% da receita (CVR 0,03%). Canais orgânicos/owned = 6% das sessões, 54% da receita (CVR 3,83%). Gap de 116x.</div>`;
+  new Chart(document.getElementById('c1'),{type:'bar',data:{labels:MO,datasets:[
+    {type:'bar',label:'2026 observado (mensal)',data:v26obs,backgroundColor:B+'cc',order:2},
+    {type:'bar',label:'2025 mensal (ref)',data:[null,null,...v25],backgroundColor:[null,null,...v25].map((v,i)=>i<2||!v?'transparent':C25),order:3},
+    {type:'line',label:'2026 acumulado',data:cum26obs,borderColor:B,borderWidth:2,pointRadius:4,fill:false,yAxisID:'y2',order:0,tension:0.3},
+    {type:'line',label:'2025 acumulado',data:c25al,borderColor:C25line,borderWidth:2,pointRadius:3,fill:false,yAxisID:'y2',order:1,tension:0.3},
+    {type:'line',label:'Plano original',data:plan,borderColor:AM,borderDash:[6,3],borderWidth:1.5,pointRadius:2,fill:false,yAxisID:'y2',order:2,tension:0.3},
+  ]},options:{...baseOpts()}});
+}
+
+function buildS2(){
+  document.getElementById('s2').innerHTML=`
+    <div class="stitle">Perfil do comprador 2025</div>
+    <div class="ssub">Base HubSpot classificada: cliente ativo, conhece a Nuvem, novo / não identificado</div>
+    <div class="kr">${K('1.683','Total pagos 2025 (abr–set)')+K('62%','Clientes ativos em abr','g')+K('46%','Novos em set','w')}</div>
+    <div class="cb"><canvas id="c2"></canvas></div>
+    <div class="note">Em abr/2025 (lançamento), 62% eram clientes ativos. Em set/2025 (pico de vendas), 46% eram novos — a máquina externa ganha tração conforme o evento se aproxima e o awareness cresce.</div>`;
+  new Chart(document.getElementById('c2'),{type:'bar',data:{labels:MO.slice(2),datasets:[
+    {label:'Cliente ativo',data:rC.map((r,i)=>Math.round(r*v25[i])),backgroundColor:B+'cc',stack:'a'},
+    {label:'Conhece a Nuvem',data:rK.map((r,i)=>Math.round(r*v25[i])),backgroundColor:AM+'cc',stack:'a'},
+    {label:'Novo / Não identificado',data:rN.map((r,i)=>Math.round(r*v25[i])),backgroundColor:'rgba(136,136,136,0.4)',stack:'a'},
+    {type:'line',label:'% Novo',data:rN.map(r=>Math.round(r*100)),borderColor:'#888',borderDash:[4,3],pointRadius:3,fill:false,yAxisID:'y2'},
+  ]},options:{...baseOpts(),scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,title:{display:true,text:'Ingressos',font:{size:10}}},y2:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+'%'},title:{display:true,text:'% Novo',font:{size:10}},min:0,max:60}}}});
+}
+
+function buildSC(){
+  const pSess=1441874,oSess=98416,uSess=97607;
+  const pRev=115715,oRev=352720,uRev=179371;
+  document.getElementById('sc').innerHTML=`
+    <div class="stitle">A eficiência estava nas alavancas internas</div>
+    <div class="ssub">GA4 · abr–set 2025 · 1,6M sessões · R$648k receita total</div>
+    <div class="kr">
+      ${K('88%','Sessões — mídia paga','w')}
+      ${K('18%','Receita — mídia paga','w')}
+      ${K('54%','Receita — orgânico/próprio','g')}
+      ${K('116x','CVR orgânico vs pago','g')}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div><div style="font-size:11px;color:#888;margin-bottom:6px;text-align:center">Distribuição de sessões</div><div style="height:160px"><canvas id="cd1"></canvas></div></div>
+      <div><div style="font-size:11px;color:#888;margin-bottom:6px;text-align:center">Distribuição de receita</div><div style="height:160px"><canvas id="cd2"></canvas></div></div>
+    </div>
+    <div style="font-size:11px;color:#888;margin-bottom:6px">Receita por sessão — R$/sessão</div>
+    <div style="height:200px"><canvas id="cd3"></canvas></div>
+    <div class="note">Organic Social gera 131x mais receita/sessão que Paid Search. Referral: 368x. "Paid Other" (Spotify, Uber, branded content) = R$0,16/sessão — 88x abaixo de Organic Social. <strong>O 80% está nas alavancas internas.</strong></div>`;
+  const donutOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}}};
+  new Chart(document.getElementById('cd1'),{type:'doughnut',data:{labels:['Mídia paga','Orgânico/próprio','Sem atribuição'],datasets:[{data:[pSess,oSess,uSess],backgroundColor:['rgba(224,80,80,0.75)',B+'cc','rgba(136,136,136,0.45)'],borderWidth:0}]},options:donutOpts});
+  new Chart(document.getElementById('cd2'),{type:'doughnut',data:{labels:['Orgânico/próprio','Sem atribuição','Mídia paga'],datasets:[{data:[oRev,uRev,pRev],backgroundColor:[B+'cc','rgba(136,136,136,0.45)','rgba(224,80,80,0.75)'],borderWidth:0}]},options:donutOpts});
+  const chL=['Referral','Org. Social','Email','Unassigned','Org. Vídeo','Org. Search','Display','Paid Other','Paid Social','Paid Search'];
+  const chV=[13.99,4.98,1.86,1.84,1.50,0.34,0.50,0.16,0.13,0.04];
+  const chC=[B,B,B,'rgba(136,136,136,0.55)',B,B,'rgba(229,148,0,0.75)','rgba(229,148,0,0.75)','rgba(224,80,80,0.7)','rgba(224,80,80,0.7)'];
+  new Chart(document.getElementById('cd3'),{type:'bar',data:{labels:chL,datasets:[{data:chV,backgroundColor:chC,borderWidth:0}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'R$/sessão',font:{size:10}},ticks:{callback:v=>'R$'+v.toFixed(2)}}}}});
+}
+
+let c3ref;
+function kr3(m,j){const c=calc(m,j);return`<div class="kr">${K(m,'Mai')+K(j,'Jun')+K(c.jul,'Jul','w')+K(c.ago,'Ago','w')+K(c.set,'Set','w')+K(c.need,'Necessário jul–set','w')}</div>`}
+function getYoy(m,j){
+  const c=calc(m,j);
+  const prjD=[null,null,null,m,j,c.jul,c.ago,c.set];
+  const yoy=MO.map((_,i)=>{const a=[43,m,j,c.jul,c.ago,c.set][i-2];const b=v25[i-2];return(i>=2&&a&&b)?Math.round((a/b-1)*100):null});
+  return{prjD,yoy};
+}
+function buildS3(){
+  document.getElementById('s3').innerHTML=`
+    <div class="stitle">Cenário proposto</div>
+    <div class="ssub">Mai e Jun definem o restante · Jul–Set distribuídos pela sazonalidade 2025 · linha verde = crescimento YoY</div>
+    <div class="sg">
+      <label>Mai</label><input type="range" id="sm" min="50" max="800" value="${mai}" step="10"><span class="sv" id="vm">${mai}</span>
+      &nbsp;&nbsp;
+      <label>Jun</label><input type="range" id="sj" min="50" max="800" value="${jun}" step="10"><span class="sv" id="vj">${jun}</span>
+    </div>
+    <div id="k3">${kr3(mai,jun)}</div>
+    <div class="cb" style="height:265px"><canvas id="c3"></canvas></div>`;
+  const d=getYoy(mai,jun);
+  c3ref=new Chart(document.getElementById('c3'),{type:'bar',data:{labels:MO,datasets:[
+    {label:'2025 real',data:[null,null,...v25],backgroundColor:C25,stack:'a',order:3},
+    {label:'2026 observado',data:[57,90,43,25,null,null,null,null],backgroundColor:B,stack:'b',order:4},
+    {label:'2026 projetado',data:d.prjD,backgroundColor:B+'66',stack:'b',order:5},
+    {type:'line',label:'Crescimento YoY (%)',data:d.yoy,borderColor:G,borderDash:[4,3],borderWidth:1.5,pointRadius:4,pointBackgroundColor:G,fill:false,yAxisID:'y2',order:0,tension:0.3},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+    scales:{y:{beginAtZero:true,suggestedMax:900,title:{display:true,text:'Ingressos',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},
+      y2:{position:'right',grid:{drawOnChartArea:false},ticks:{color:G,callback:v=>v+'%'},title:{display:true,text:'Crescimento YoY',font:{size:10},color:G},border:{color:G}},
+      x:{grid:{display:false}}}}});
+  document.getElementById('sm').oninput=function(){mai=+this.value;document.getElementById('vm').textContent=mai;up3()};
+  document.getElementById('sj').oninput=function(){jun=+this.value;document.getElementById('vj').textContent=jun;up3()};
+}
+function up3(){
+  if(!c3ref)return;
+  const d=getYoy(mai,jun);
+  c3ref.data.datasets[2].data=d.prjD;
+  c3ref.data.datasets[3].data=d.yoy;
+  c3ref.update();
+  document.getElementById('k3').innerHTML=kr3(mai,jun);
+}
+
+const tl=[
+  {ph:1,wk:'Semana 1 — 03 a 09/mai',hl:'Lançamento · 05/mai',ac:[
+    {ch:'Social',bg:'#534AB7',it:['05/mai: post lançamento D2C Summit + bio CTA (D2C, Nuvemshop, EnP); Comunidade IG reforço lançamento','07/mai: post "5 motivos para aproveitar o Lote 1 + ingressos em grupo"']},
+    {ch:'Creators',bg:'#854F0B',it:['05/mai: Alexo Moro + Matheus Zappiello divulgam lançamento da campanha']},
+    {ch:'LC / CRM',bg:'#3B6D11',it:['05/mai: email lançamento — LCY clientes SMB + CRM D2C (leads frios + compradores 2025) + Growth (leads/freemium) + EnP','05/mai: WhatsApp ativação da comunidade']},
+    {ch:'Admin',bg:'#185FA5',it:['05–15/mai: banner fixo A/B — SMB: comunicação padrão vs grupo; Next: comunicação grupo (cortesia)','05/mai: in-app lançamento campanha']},
+    {ch:'Eventos',bg:'#993C1D',it:['06/mai: Congresso Alimentos & Bebidas — tablet + QR code + orientação ao promotor','07/mai: TD Sebrae; Webinar semana 1: divulgação do lançamento']},
+    {ch:'EnP / Site',bg:'#0F6E56',it:['05–15/mai: banner plataforma (lançamento campanha ingresso em grupo)','05/mai: slidebar blog com período da campanha; Newsletter: lançamento (data a confirmar)']},
+  ]},
+  {ph:1,wk:'Semana 2 — 10 a 16/mai',hl:'Repiques + reforço',ac:[
+    {ch:'Social',bg:'#534AB7',it:['11/mai: meme Nazaré fazendo as contas — Lote 1 + desconto por grupo','14/mai: stories reforço']},
+    {ch:'LC / CRM',bg:'#3B6D11',it:['13/mai: repique email — LCY + CRM D2C + Growth (condicionado a resultado)','14/mai: reforço EnP']},
+  ]},
+  {ph:2,wk:'Semana 3 — 17 a 23/mai',hl:'Sustentação',ac:[
+    {ch:'Social',bg:'#534AB7',it:['18/mai: post blur — preço Lote 1 vs Lote 2 + "garanta o grupo antes da virada"','21/mai: stories']},
+    {ch:'Admin',bg:'#185FA5',it:['15/mai: in-app reforço ingresso em grupo']},
+    {ch:'Webinar',bg:'#993C1D',it:['"Últimos 15 dias para comprar Lote 1 com desconto em grupo"']},
+  ]},
+  {ph:2,wk:'Semana 4 — 24 a 30/mai',hl:'Urgência',ac:[
+    {ch:'Social',bg:'#534AB7',it:['28/mai: feed + stories','30/mai: countdown "faltam 3 dias" — D2C, Nuvemshop, EnP + Comunidade IG simultâneos']},
+    {ch:'Webinar',bg:'#993C1D',it:['27/mai: "Últimos dias Lote 1 com desconto em grupo — virada em 03/jun"']},
+  ]},
+  {ph:2,wk:'Semana 5 — 31/mai a 02/jun',hl:'Último dia · 02/jun',ac:[
+    {ch:'Social',bg:'#534AB7',it:['31/mai: stories "faltam 2 dias" · 01/jun: stories "falta 1 dia"','02/jun: feed + stories último dia — Lote 1 + compra em grupo']},
+    {ch:'Creators',bg:'#854F0B',it:['01/jun: Alexo Moro reels em collab com D2C Summit']},
+  ]},
+];
+
+function buildS5(){
+  let h=`
+    <div class="stitle">Campanha ingressos em grupo · mai–jun</div>
+    <div class="ssub">O que fazemos até a virada de lote em 02/jun</div>
+    <div class="note-g" style="margin-bottom:14px">🟢 <strong>Primeiros resultados:</strong> 12 ingressos em 2 pedidos grupo (12–13/mai). Slugs <code>grupo_standard_luis30</code> (10 ingressos, 30% off) e <code>oferta-grupo-standard25</code> (2 ingressos, 25% off). A mecânica está funcionando.</div>
+    <div class="kc" style="border-left:3px solid ${B};margin-bottom:14px">
+      <div style="font-size:13px;color:#333;line-height:1.75">
+        A partir de 05 de maio, lançamos uma campanha de ingressos em grupo. Os dados de 2026 já mostram esse comportamento: <strong>40% das compras foram de 2 ou mais ingressos</strong>. A oferta formaliza o que já acontece — desconto progressivo por número de pessoas, com deadline natural na virada de lote em <strong>02/jun</strong>.
+      </div>
+    </div>
+    <div style="background:#f8f9fb;border-radius:8px;padding:14px 16px;border:1px solid #eef0f3;margin-bottom:12px">
+      <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">Linha do tempo</div>
+      <div style="display:flex;align-items:center;gap:0;font-size:12px">
+        <div style="background:${B};color:#fff;padding:7px 14px;border-radius:6px 0 0 6px;white-space:nowrap">05/mai · Lançamento</div>
+        <div style="flex:1;height:3px;background:linear-gradient(to right,${B},#BA7517)"></div>
+        <div style="background:#BA7517;color:#fff;padding:7px 14px;border-radius:0 6px 6px 0;white-space:nowrap">02/jun · Virada de lote</div>
+      </div>
+    </div>
+    <div style="background:#f8f9fb;border-radius:8px;padding:12px 16px;border:1px solid #eef0f3">
+      <div style="font-size:11px;color:#888;margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px">KPIs da campanha</div>
+      <table class="ktab">
+        <tr><td>Ingressos vendidos (05–15/mai)</td><td>42 → 62 → 88 (piso · meta · stretch) · <strong style="color:#27ae60">atual: 22 ingressos desde 05/mai</strong></td></tr>
+        <tr><td>% vendas em grupo</td><td>≥ 50% · <strong style="color:#27ae60">atual: 12/22 = 55% em grupo</strong></td></tr>
+        <tr><td>Carrinhos recuperados</td><td>5–10 / semana</td></tr>
+      </table>
+    </div>`;
+  document.getElementById('s5').innerHTML=h;
+}
+
+function buildS0(){
+  const lb=['Abertura','M+1','M+2','M+3\n(abr)','M+4\n(agora)','M+5','M+6','M+7','M+8\n(evento)'];
+  const c25=[0,105,261,505,816,1154,1683,null,null];
+  const c26=[0,57,147,190,215,null,null,null,null];
+  document.getElementById('s0').innerHTML=`
+    <div class="stitle">2026 vs 2025 — mesmo ponto de partida</div>
+    <div class="ssub">Curvas alinhadas pelo dia de abertura · 2025: 23/abr (6 meses) · 2026: 23/fev (8 meses) · M+1 ≈ 7–8 dias em ambos</div>
+    <div class="kr">
+      ${K(215,'2026 agora (M+4)')+K(505,'2025 no M+3 (abr)','w')+K('816','2025 no M+4 (fim mai/26)','w')+K('+601','Gap para 2025 M+4','w')}
+    </div>
+    <div class="cb" style="height:270px"><canvas id="c0"></canvas></div>
+    <div class="note-g">🟢 Semana 10–16/mai: 14 ingressos em 4 dias (3,5/dia) — campanha grupo convertendo. Maio: 25 ingressos em 13 dias (1,9/dia). Última venda: 13/mai 01h31.</div>
+    <div class="note" style="margin-top:8px">Para paridade com 2025 no M+4 (fim de maio), necessários <strong>601 ingressos ainda em maio</strong>. Pacing necessário para meta = 18,8/dia.</div>`;
+  const planM=[null,98,322,600,968,1339,1757,2314,2870];
+  new Chart(document.getElementById('c0'),{type:'line',data:{labels:lb,datasets:[
+    {label:'2025 real',data:c25,borderColor:C25line,backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,pointBackgroundColor:C25line,tension:0.3},
+    {label:'2026 observado',data:c26,borderColor:B,backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,pointBackgroundColor:B,tension:0.3},
+    {label:'Plano original 2026',data:planM,borderColor:AM,backgroundColor:'transparent',borderWidth:1.5,borderDash:[6,3],pointRadius:2,tension:0.3},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+    scales:{
+      y:{beginAtZero:true,title:{display:true,text:'Cumulativo ingressos',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},
+      x:{grid:{display:false},ticks:{font:{size:11}}}
+    }
+  }});
+}
+buildS0();buildS1();buildS2();buildSC();buildS3();buildS5();go(0);
+</script>
+</body>
+</html>
